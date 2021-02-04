@@ -1,10 +1,10 @@
 import warnings
-
+import scipy
 import numpy as np
 import timecorr as tc
 
 from scipy.spatial.distance import cdist
-
+from scipy.linalg import toeplitz, circulant, block_diag
 
 def random_corrmat(K):
     x = np.random.randn(K, K)
@@ -13,6 +13,22 @@ def random_corrmat(K):
     np.fill_diagonal(x, 1.)
     return x
 
+def toe_corrmat(K):
+    x = toeplitz(np.linspace(0, 1, K)[::-1])
+    np.fill_diagonal(x, 1.)
+    return x
+
+
+def blocky_corrmat(K):
+
+    bk = round(K/3)
+    remain = bk + (K % 3)
+    b1 = block_diag(np.ones((bk, bk)), np.zeros((bk, bk)), np.zeros((remain, remain)))
+    b2 = block_diag(np.zeros((bk, bk)), np.ones((bk, bk)), np.zeros((remain, remain)))
+    b3 = block_diag(np.zeros((bk, bk)), np.zeros((bk, bk)), np.ones((remain, remain)))
+    noisy = (b1 * 1 + b2 * 2 + b3 * 3) + np.random.randn(K, K) * .1
+    data = tc.helpers.norm_mat(noisy)
+    return data
 
 def ramping_dataset(K, T, *args):
     warnings.simplefilter('ignore')
@@ -66,6 +82,25 @@ def constant_dataset(K, T, *args):
 
     return Y, corrs
 
+def toe_dataset(K, T, *args):
+    warnings.simplefilter('ignore')
+
+    C = toe_corrmat(K)
+    corrs = np.tile(tc.mat2vec(C), [T, 1])
+
+    Y = np.random.multivariate_normal(mean=np.zeros([K]) + .1, cov=C, size=T)
+
+    return Y, corrs
+
+def blocky_dataset(K, T, *args):
+    warnings.simplefilter('ignore')
+
+    C = blocky_corrmat(K)
+    corrs = np.tile(tc.mat2vec(C), [T, 1])
+
+    Y = np.random.multivariate_normal(mean=np.zeros([K]) + .1, cov=C, size=T)
+
+    return Y, corrs
 
 def block_dataset(K, T, B=5):
     warnings.simplefilter('ignore')
@@ -126,7 +161,7 @@ def simulate_data(datagen='ramping', return_corrs=False, set_random_seed=False, 
 
     """
 
-    datagen_funcs = {'block': block_dataset, 'ramping': ramping_dataset, 'constant': constant_dataset, 'random':random_dataset}
+    datagen_funcs = {'toeplitz': toe_dataset, 'blocky': blocky_dataset, 'block': block_dataset, 'ramping': ramping_dataset, 'constant': constant_dataset, 'random':random_dataset}
 
     if set_random_seed:
         if isinstance(set_random_seed, bool):
