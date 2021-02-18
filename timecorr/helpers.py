@@ -678,7 +678,8 @@ def weighted_timepoint_decoder_ec(data, nfolds=2, level=0, optimize_levels=None,
 
             mu_pd += mu
 
-            next_results_pd = pd.concat([next_results_pd, mu_pd], axis=1, join_axes=[next_results_pd.index])
+            next_results_pd = pd.concat([next_results_pd, mu_pd], axis=1)
+            next_results_pd = next_results_pd.reindex(next_results_pd.index)
 
             results_pd = pd.concat([results_pd, next_results_pd])
 
@@ -873,7 +874,8 @@ def weighted_timepoint_decoder(data, nfolds=2, level=0, optimize_levels=None, cf
 
             mu_pd += mu
 
-            next_results_pd = pd.concat([next_results_pd, mu_pd], axis=1, join_axes=[next_results_pd.index])
+            next_results_pd = pd.concat([next_results_pd, mu_pd], axis=1)
+            next_results_pd = next_results_pd.reindex(next_results_pd.index)
 
             results_pd = pd.concat([results_pd, next_results_pd])
 
