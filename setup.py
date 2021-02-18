@@ -31,7 +31,7 @@ setup(
         'seaborn>=0.8.1',
         'scikit-learn>=0.19.1',
         #'brainconn @ git+ssh://git@github.com/FIU-Neuro/brainconn#egg=brainconn-0.1.0',
-        'hypertools @ git+ssh://git@github.com/ContextLab/hypertools.git'
+        #'hypertools @ git+ssh://git@github.com/ContextLab/hypertools.git'
     ],
     packages=find_packages(exclude=('tests', 'docs')),
 )
