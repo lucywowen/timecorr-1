@@ -789,11 +789,11 @@ def weighted_timepoint_decoder(data, nfolds=2, level=0, optimize_levels=None, cf
                                         combine=combine, weights_fun=weights_fun,
                                         weights_params=weights_params)
 
-                next_corrs = (1 - sd.cdist(mean_combine([x for x in in_raw]), mean_combine([x for x in out_raw]),
-                                           'correlation'))
-
-                # next_corrs = (1 - sd.cdist(mean_combine(in_smooth), mean_combine(out_smooth),
+                # next_corrs = (1 - sd.cdist(mean_combine([x for x in in_raw]), mean_combine([x for x in out_raw]),
                 #                            'correlation'))
+
+                next_corrs = (1 - sd.cdist(mean_combine(in_smooth), mean_combine(out_smooth),
+                                           'correlation'))
                 corrs.append(next_corrs)
 
                 for s in range(0, 1):
@@ -805,10 +805,10 @@ def weighted_timepoint_decoder(data, nfolds=2, level=0, optimize_levels=None, cf
                                                                                             level=v, cfun=None, rfun=p_rfun,
                                                                                             combine=combine,                                                                                           weights_fun=weights_fun,
                                                                                             weights_params=weights_params)
-                    next_subcorrs = (1 - sd.cdist(mean_combine([x for x in sub_in_raw]),
-                                                  mean_combine([x for x in sub_out_raw]), 'correlation'))
-                    # next_subcorrs = (1 - sd.cdist(mean_combine(sub_in_smooth),
-                    #                               mean_combine(sub_out_smooth), 'correlation'))
+                    # next_subcorrs = (1 - sd.cdist(mean_combine([x for x in sub_in_raw]),
+                    #                               mean_combine([x for x in sub_out_raw]), 'correlation'))
+                    next_subcorrs = (1 - sd.cdist(mean_combine(sub_in_smooth),
+                                                  mean_combine(sub_out_smooth), 'correlation'))
                     sub_corrs.append(next_subcorrs)
 
 
