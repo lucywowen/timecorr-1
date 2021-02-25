@@ -25,13 +25,17 @@ setup(
         'duecredit',
         'numpy>=1.14.2',
         'pandas>=0.22.0',
-        #'hypertools',
+        'hypertools',
         'scipy>=0.13.3',
         'matplotlib>=2.1.0',
         'seaborn>=0.8.1',
         'scikit-learn>=0.19.1',
         #'brainconn @ git+ssh://git@github.com/FIU-Neuro/brainconn#egg=brainconn-0.1.0',
         #'hypertools @ git+ssh://git@github.com/ContextLab/hypertools.git'
+    ],
+    dependency_links=[
+
+        'git+https://github.com/ContextLab/hypertools.git@master#egg=hypertools-0',
     ],
     packages=find_packages(exclude=('tests', 'docs')),
 )
